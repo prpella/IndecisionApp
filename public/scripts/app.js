@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8,27 +8,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// import React from 'react'
-// import ReactDOM from 'react-dom'
+/* eslint-disable no-console */
+// stateless functional component
 
-// Basic Component Structure
-
-// class Header extends React.Component {
-//   render() {
-//     return <p>This is from Header</p>
-//   }
-// }
-
-// const jsx = (
-//   <div>
-//     <h1>Title</h1>
-//     <Header/>
-//   </div>
-// )
-
-// ReactDOM.render(jsx, document.getElementById('app'))
-
-// eslint-disable-next-line no-undef
 var IndecisionApp = function (_React$Component) {
   _inherits(IndecisionApp, _React$Component);
 
@@ -48,58 +30,67 @@ var IndecisionApp = function (_React$Component) {
   }
 
   _createClass(IndecisionApp, [{
-    key: "handleDeleteOptions",
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      console.log("fetching data");
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      console.log('saving data');
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      console.log('comp will unmount');
+    }
+  }, {
+    key: 'handleDeleteOptions',
     value: function handleDeleteOptions() {
       this.setState(function () {
         return { options: [] };
       });
     }
   }, {
-    key: "handleDeleteOption",
+    key: 'handleDeleteOption',
     value: function handleDeleteOption(optionToRemove) {
       this.setState(function (prevState) {
         return {
           options: prevState.options.filter(function (option) {
-            optionToRemove !== option;
+            return optionToRemove !== option;
           })
         };
       });
     }
-    // no state needed for option
-
   }, {
-    key: "handlePick",
+    key: 'handlePick',
     value: function handlePick() {
       var randomNum = Math.floor(Math.random() * this.state.options.length);
       var option = this.state.options[randomNum];
       alert(option);
     }
   }, {
-    key: "handleAddOption",
+    key: 'handleAddOption',
     value: function handleAddOption(option) {
       if (!option) {
-        return "Enter valid Value to add item";
+        return 'Enter valid value to add item';
       } else if (this.state.options.indexOf(option) > -1) {
-        // checks, if there is a match in the array
-        return "This option already exists";
+        return 'This option already exists';
       }
-      // concat is used instead of .push, as push is manipulating the this.state object.
-      // Never manipulate this.state or prevState! Just compute the new one! concat does this,
-      // as it returns a new array
 
       this.setState(function (prevState) {
         return { options: prevState.options.concat(option) };
       });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
-      var subTitle = 'Put your Life in the hands of a computer!';
+      var subtitle = 'Put your life in the hands of a computer';
 
       return React.createElement(
-        "div",
+        'div',
         null,
-        React.createElement(Header, { subTitle: subTitle }),
+        React.createElement(Header, { subtitle: subtitle }),
         React.createElement(Action, {
           hasOptions: this.state.options.length > 0,
           handlePick: this.handlePick
@@ -119,58 +110,54 @@ var IndecisionApp = function (_React$Component) {
   return IndecisionApp;
 }(React.Component);
 
-// stateless functional components
-
+IndecisionApp.defaultProps = {
+  options: []
+};
 
 var Header = function Header(props) {
   return React.createElement(
-    "div",
+    'div',
     null,
     React.createElement(
-      "h1",
-      { style: { backgroundColor: 'green', color: 'white' } },
+      'h1',
+      null,
       props.title
     ),
-    props.subTitle && React.createElement(
-      "h2",
+    props.subtitle && React.createElement(
+      'h2',
       null,
-      props.subTitle
+      props.subtitle
     )
   );
 };
 
 Header.defaultProps = {
-  title: 'Indecision App'
+  title: 'Indecision'
 };
 
 var Action = function Action(props) {
   return React.createElement(
-    "div",
+    'div',
     null,
     React.createElement(
-      "button",
-      { onClick: props.handlePick,
+      'button',
+      {
+        onClick: props.handlePick,
         disabled: !props.hasOptions
       },
-      "What Should I Do, say ?"
+      'What should I do?'
     )
   );
 };
 
-// ------CALLING BIN IN THE CONSTRUCTOR METHOD------
-// method binding! use .bind(this) in the render function (expensive in data) Better: 
-// overwrite the React.Component constructor function with constructor method and pass props in (here same as this.props)
-// call super to make use the values got set
-// set this.handle... to the binding of this
-
 var Options = function Options(props) {
   return React.createElement(
-    "div",
+    'div',
     null,
     React.createElement(
-      "button",
+      'button',
       { onClick: props.handleDeleteOptions },
-      "Remove all"
+      'Remove All'
     ),
     props.options.map(function (option) {
       return React.createElement(Option, {
@@ -184,22 +171,19 @@ var Options = function Options(props) {
 
 var Option = function Option(props) {
   return React.createElement(
-    "div",
+    'div',
     null,
     props.optionText,
     React.createElement(
-      "button",
-      {
-        onClick: function onClick() {
+      'button',
+      { onClick: function onClick() {
           props.handleDeleteOption(props.optionText);
         }
       },
-      "Remove"
+      'Remove'
     )
   );
 };
-
-// eslint-disable-next-line no-undef
 
 var AddOption = function (_React$Component2) {
   _inherits(AddOption, _React$Component2);
@@ -217,12 +201,11 @@ var AddOption = function (_React$Component2) {
   }
 
   _createClass(AddOption, [{
-    key: "handleAddOption",
+    key: 'handleAddOption',
     value: function handleAddOption(e) {
       e.preventDefault();
+
       var option = e.target.elements.option.value.trim();
-      // parent method returns only error, if something went wrong, if no error occurs,
-      // undefinded is returned. that is why we can store the error return value.
       var error = this.props.handleAddOption(option);
 
       this.setState(function () {
@@ -230,24 +213,24 @@ var AddOption = function (_React$Component2) {
       });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return React.createElement(
-        "div",
+        'div',
         null,
         this.state.error && React.createElement(
-          "p",
+          'p',
           null,
           this.state.error
         ),
         React.createElement(
-          "form",
+          'form',
           { onSubmit: this.handleAddOption },
-          React.createElement("input", { type: "text", name: "option" }),
+          React.createElement('input', { type: 'text', name: 'option' }),
           React.createElement(
-            "button",
+            'button',
             null,
-            "Add Option"
+            'Add Option'
           )
         )
       );
@@ -256,8 +239,5 @@ var AddOption = function (_React$Component2) {
 
   return AddOption;
 }(React.Component);
-
-// eslint-disable-next-line no-undef
-
 
 ReactDOM.render(React.createElement(IndecisionApp, null), document.getElementById('app'));
